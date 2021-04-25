@@ -37,8 +37,8 @@ Mat get_hogdescriptor_visual_image(Mat& origImg,
 	 float radRangeForOneBin = 3.14 / (float)gradientBinSize; //pi=3.14 corresponds to 180°
  
 	// prepare data structure: 9 orientation / gradient strenghts for each cell
-	 int cells_in_x_dir = winSize.width / cellSize.width; // number of cells in the x direction
-	 int cells_in_y_dir = winSize.height / cellSize.height;//number of cells in the y direction
+	 int cells_in_x_dir = origImg.rows / cellSize.width; // number of cells in the x direction
+	 int cells_in_y_dir = origImg.cols / cellSize.height;//number of cells in the y direction
 	 int totalnrofcells = cells_in_x_dir * cells_in_y_dir; // total number of cells
 	 // Note the definition of the three-dimensional array here
 	//int ***b;
@@ -144,7 +144,7 @@ Mat get_hogdescriptor_visual_image(Mat& origImg,
 			int drawY = celly * cellSize.height;
  
 			int mx = drawX + cellSize.width / 2;
-			int my = drawY + cellSize.height / 2;
+			int my = drawY + cellSize.height /2;
  
 			rectangle(visual_image,
 				Point(drawX*scaleFactor, drawY*scaleFactor),
@@ -212,7 +212,7 @@ using namespace cv;
 int main( int argc, char** argv ) {
   
   cv::Mat img;
-  img = cv::imread("lena.jpeg", 1);
+  img = cv::imread("slika.png", 1);
   
   if(! img.data ) {
       std::cout <<  "Could not open or find the image" << std::endl ;
@@ -222,18 +222,22 @@ int main( int argc, char** argv ) {
   
   
   cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );
-  cv::imshow( "Display window", img );
+  //cv::imshow( "Display window", img );
   
-  //resize(img, img, Size(50, 50));
+  resize(img, img, Size(512, 512));
+  cv::imshow( "Display window", img );
   HOGDescriptor hog;
   std::vector<float> descriptors;
 
-	hog.winSize = Size(50,50);
-	hog.blockSize = Size(10, 10);
-	hog.cellSize = Size(5, 5);
-	hog.compute(img, descriptors, Size(10, 10));
-	Mat background = Mat::zeros(Size(50,50),CV_8UC1);
-	Mat d = get_hogdescriptor_visual_image(background,descriptors,hog.winSize,hog.cellSize,1,2.5);
+	hog.winSize = Size(512, 512);
+	hog.blockSize = Size(16, 16);
+	hog.cellSize = Size(8, 8);
+	hog.compute(img, descriptors, Size(8, 8));
+	Mat background = Mat::zeros(Size(64,64),CV_8UC1);
+	Mat d = get_hogdescriptor_visual_image(background,descriptors,hog.winSize,hog.cellSize,3, 2.5);
+	cout<<descriptors.size()<<endl;
+	cout<<img.cols/d.cols<<endl;
+	cout<<img.rows/d.rows<<endl;
 	imshow("Hog of Lena",d);
 	imwrite("hogvisualize.jpg",d);
   
