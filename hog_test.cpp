@@ -212,7 +212,7 @@ using namespace cv;
 int main( int argc, char** argv ) {
   
   cv::Mat img;
-  img = cv::imread("smrdara.png", 1);
+  img = cv::imread("zena.png", 1);
   
   if(! img.data ) {
       std::cout <<  "Could not open or find the image" << std::endl ;
