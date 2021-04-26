@@ -212,7 +212,7 @@ using namespace cv;
 int main( int argc, char** argv ) {
   
   cv::Mat img;
-  img = cv::imread("slika.png", 1);
+  img = cv::imread("smrdara.png", 1);
   
   if(! img.data ) {
       std::cout <<  "Could not open or find the image" << std::endl ;
@@ -224,16 +224,16 @@ int main( int argc, char** argv ) {
   cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );
   //cv::imshow( "Display window", img );
   
-  resize(img, img, Size(512, 512));
+  resize(img, img, Size(256, 256));
   cv::imshow( "Display window", img );
   HOGDescriptor hog;
   std::vector<float> descriptors;
 
-	hog.winSize = Size(512, 512);
+	hog.winSize = Size(256, 256);
 	hog.blockSize = Size(16, 16);
 	hog.cellSize = Size(8, 8);
 	hog.compute(img, descriptors, Size(8, 8));
-	Mat background = Mat::zeros(Size(64,64),CV_8UC1);
+	Mat background = Mat::zeros(Size(256, 256),CV_8UC1);
 	Mat d = get_hogdescriptor_visual_image(background,descriptors,hog.winSize,hog.cellSize,3, 2.5);
 	cout<<descriptors.size()<<endl;
 	cout<<img.cols/d.cols<<endl;
